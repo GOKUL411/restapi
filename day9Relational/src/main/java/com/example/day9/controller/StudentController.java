@@ -1,0 +1,38 @@
+package com.example.day9.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.day9.model.StudentModel;
+import com.example.day9.repository.StudentRepo;
+
+@RestController
+@RequestMapping("/")
+public class StudentController {
+    @Autowired
+    StudentRepo srepo;
+
+    @PostMapping("/postMod")
+    public StudentModel saveDetails(@RequestBody StudentModel am) {
+        return srepo.save(am);
+    }
+
+    @GetMapping("/getMod")
+    public List<StudentModel> getDetails() {
+        return srepo.findAll();
+    }
+
+    @DeleteMapping("/deleteMod/{id}")  // Added a slash before "deleteModel"
+    public String deleteStudent(@PathVariable("id") int id) {
+        srepo.deleteById(id);  // Actually delete the student from the repository
+        return "The id " + id + " is deleted";
+    }
+}
